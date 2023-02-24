@@ -25,6 +25,7 @@ class GameBoard(IDraw,IClick):
         self.create_game()
         self.generate_border_lines()
         self.enable_ai = enable_ai
+        self.winingLine = None
 
 
 
@@ -81,6 +82,9 @@ class GameBoard(IDraw,IClick):
         for line in self.border_lines:
             line.draw(surface)
 
+        if self.getWinnigLine() is not None:
+            self.getWinnigLine().draw(surface)
+
     def is_clicked(self,coordinate : Vector2):
         pass
 
@@ -100,3 +104,8 @@ class GameBoard(IDraw,IClick):
                     return Vector2(row,col)
 
 
+    def setWiningLine(self, startPoint, endPoint):
+        self.winingLine = GameLine(7, startPoint, endPoint, Color(255,0,0))
+
+    def getWinnigLine(self):
+        return self.winingLine

@@ -1,11 +1,13 @@
 
 from random import randint
+import logging
 
 from pygame import Vector2
 from Game_State import Game_State
 from GUI.Game_Board import GameBoard
 from Game_Logic import Game_Logic
 
+logger = logging.getLogger(__name__)
 
 class MinMaxAlg:
 
@@ -22,16 +24,16 @@ class MinMaxAlg:
 
         res = self.between_choose_moves(0)
 
-        print("min_max_finished")
+        logger.info("min_max_finished")
         return res
 
 
     def between_choose_moves(self , depth):
         best_move = self.check_if_ai_will_loose()
         if best_move is not None:
-            print("entred check_if_loose")
+            logger.info("entred check_if_loose")
             return best_move
-        print("find best move")
+        logger.info("find best move")
         return self.find_best_move(depth)
 
 

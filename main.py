@@ -1,12 +1,14 @@
-
 import pygame
 from pygame.locals import *
-import threading
 from GUI.Game_Board import GameBoard
 from pygame import Vector2 as vec
 
 from Game_Logic import Game_Logic
 from Min_Max_Alg import MinMaxAlg
+import logging
+
+logging.basicConfig(filename='app.log', level=logging.INFO,filemode='w', format='%(asctime)s - %(name)s - [%(levelname)s] funcName=%(funcName)s- %(message)s')
+logger = logging.getLogger(__name__)
 
 pygame.init()
 ScreenWidthpx = 600
@@ -31,7 +33,7 @@ def main():
     while True:
         if game_logic.current_player == 0 and not game_logic.game_finished :
             tupple = min_max_alg.min_max_alg()
-            print(str(tupple[0]))
+            logger.info(str(tupple[0]))
             handle_mouse_click(game_logic,tupple[0])
             continue
 

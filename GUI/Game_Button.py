@@ -6,6 +6,7 @@ from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
 
+from GUI.Game_line import GameLine
 from Interface.IDraw import IDraw
 from Interface.IClick import IClick
 
