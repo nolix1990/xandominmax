@@ -117,9 +117,9 @@ class Game_Logic:
                 return False
 
         startPoint = self.game_board.game_matrix[0][self.game_board.num_of_cols - 1].GetTextCenter()
-        startPoint = (startPoint[0] - self.epsilon, startPoint[1] - self.epsilon)
+        startPoint = (startPoint[0] + self.epsilon, startPoint[1] - self.epsilon)
         endPoint = self.game_board.game_matrix[self.game_board.num_of_rows - 1][0].GetTextCenter()
-        endPoint = (endPoint[0] + self.epsilon, endPoint[1] + self.epsilon)
+        endPoint = (endPoint[0] - self.epsilon, endPoint[1] + self.epsilon)
         self.game_board.setWiningLine(startPoint, endPoint)
 
         return True
