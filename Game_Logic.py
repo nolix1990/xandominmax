@@ -1,8 +1,11 @@
 from random import randint
 
 from pygame import Vector2
+from Game_State import Game_State
 
 from GUI.Game_Board import GameBoard
+from GUI.Game_Button import Game_Button
+
 
 class Game_Logic:
 
@@ -14,6 +17,7 @@ class Game_Logic:
         self.button_clicked_counter = 0
 
 
+
     def handle_click(self,coordinate : Vector2):
         if self.game_finished:
             return
@@ -23,8 +27,22 @@ class Game_Logic:
         button.text = self.marks[self.current_player]
         button.handle_click(coordinate)
         self.button_clicked_counter = self.button_clicked_counter + 1
-        self.check_win(coordinate,button)
-        self.check_draw()
+        game_state = self.get_game_state(coordinate,button)
+        self.change_player()
+        return game_state
+
+
+    def get_game_state(self,coordinate,button):
+        if self.check_win(coordinate,button) : return Game_State.WIN
+        if self.check_draw() : return Game_State.DRAW
+        return Game_State.IDLE
+
+
+    def undo_change(self , button : Game_Button):
+        button.undo_handle_click()
+        button.text = " "
+        self.game_finished = False
+        self.button_clicked_counter = self.button_clicked_counter - 1
         self.change_player()
 
 
@@ -38,14 +56,18 @@ class Game_Logic:
         if win:
             self.declare_winner()
             self.game_finished = True
+            return True
+        return False
+
 
     def check_draw(self):
         if self.button_clicked_counter == self.game_board.num_of_rows*self.game_board.num_of_cols:
             self.game_finished = True
             print(f"its a Draw!!!!!!!!!! you idiot")
+            return True
+        return False
 
-
-    def check_row(self,button,bt_coordinate : Vector2):
+    def check_row(self, button, bt_coordinate: Vector2):
         row = int(bt_coordinate.x)
         for i in range(self.game_board.num_of_rows):
             if self.game_board.game_matrix[row][i].get_button_mark() != button.get_button_mark():
@@ -59,23 +81,24 @@ class Game_Logic:
                 return False
         return True
 
-
-    def check_main_digonal(self,button):
+    def check_main_digonal(self, button):
         for i in range(self.game_board.num_of_rows):
             if self.game_board.game_matrix[i][i].get_button_mark() != button.get_button_mark():
                 return False
         return True
 
-
-    def check_sec_digonal(self,button):
+    def check_sec_digonal(self, button):
         for i in range(self.game_board.num_of_rows):
-            if self.game_board.game_matrix[i][self.game_board.num_of_cols - i - 1].get_button_mark() != button.get_button_mark():
+            if self.game_board.game_matrix[i][
+                self.game_board.num_of_cols - i - 1].get_button_mark() != button.get_button_mark():
                 return False
         return True
 
-
     def change_player(self):
-        self.current_player = self.current_player^1
+        self.current_player = self.current_player ^ 1
 
     def declare_winner(self):
         print(f"player -> {self.current_player} , mark -> {self.marks[self.current_player]} is the winner")
+
+    def set_(self):
+        return self.current_player

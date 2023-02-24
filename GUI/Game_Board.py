@@ -10,13 +10,13 @@ from Interface.IDraw import IDraw
 class GameBoard(IDraw,IClick):
     BORDER=5#px
 
-    def __init__(self, matrix_width, matrix_height: int):
+    def __init__(self, matrix_width, matrix_height: int , enable_ai : bool):
         if matrix_width * matrix_height % 2 != 0: raise Exception("matrix_size must be odd number")
         self.matrix_width = matrix_width
         self.matrix_height = matrix_height
         self.num_of_rows = 3
         self.num_of_cols = 3
-        self.game_matrix:[] = []
+        self.game_matrix:[[Game_Button]] = []
         self.border_lines = []
         self.button_width = matrix_width/self.num_of_cols
         self.button_height = matrix_height/self.num_of_rows
@@ -24,6 +24,8 @@ class GameBoard(IDraw,IClick):
         self.font_color = Color(255, 255, 255)
         self.create_game()
         self.generate_border_lines()
+        self.enable_ai = enable_ai
+
 
 
     def create_game(self):
@@ -32,7 +34,7 @@ class GameBoard(IDraw,IClick):
         for row in range(self.num_of_rows):
             temp_buttons_arr = []
             for col in range(self.num_of_cols):
-                temp_buttons_arr.append(self.create_gamebutton_object(str(""),col,row))
+                temp_buttons_arr.append(self.create_gamebutton_object(str(" "),col,row))
                 values_idx = values_idx + 1
             self.game_matrix.append(temp_buttons_arr)
 
@@ -71,6 +73,8 @@ class GameBoard(IDraw,IClick):
 
 
     def draw(self,surface : Surface):
+        if self.enable_ai :
+            return
         for row in range(self.num_of_rows):
             for col in range(self.num_of_cols):
                 self.game_matrix[row][col].draw(surface)

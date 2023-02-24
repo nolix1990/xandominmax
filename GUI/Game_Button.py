@@ -68,6 +68,11 @@ class Game_Button(IDraw,IClick):
         if not self.get_is_flliped():
             self.fllip()
 
+
+    def undo_handle_click(self):
+        if self.get_is_flliped():
+            self.fllip()
+
     def fllip(self):
         self.flliped = not self.flliped
 
